@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>通讯录管理</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h2>通讯录管理</h2>
+
+    <!-- 添加联系人表单 -->
+    <div class="add-contact">
+        <h3>添加新联系人</h3>
+        <form th:action="@{/add}" th:object="${contact}" method="post">
+            姓名：<input type="text" th:field="*{name}" required><br>
+            地址：<input type="text" th:field="*{address}" required><br>
+            电话：<input type="text" th:field="*{phone}" required><br>
+            <button type="submit">添加</button>
+        </form>
+    </div>
+
+    <!-- 联系人列表 -->
+    <div class="contacts-list">
+        <h3>联系人列表</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>地址</th>
+                <th>电话</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contact : ${contacts}">
+                <td th:text="${contact.id}">1</td>
+                <td th:text="${contact.name}">张三</td>
+                <td th:text="${contact.address}">北京市朝阳区</td>
+                <td th:text="${contact.phone}">12345678901</td>
+                <td>
+                    <a th:href="@{'/edit/' + ${contact.id}}">编辑</a>
+                    <a th:href="@{'/delete/' + ${contact.id}}">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 编辑联系人表单 -->
+    <div class="edit-contact" th:if="${editMode}">
+        <h3>编辑联系人</h3>
+        <form th:action="@{'/update/' + ${contact.id}}" th:object="${contact}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            姓名：<input type="text" th:field="*{name}" required><br>
+            地址：<input type="text" th:field="*{address}" required><br>
+            电话：<input type="text" th:field="*{phone}" required><br>
+            <button type="submit">更新</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
